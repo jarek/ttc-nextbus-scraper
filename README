@@ -1,0 +1,3 @@
+This is a simple scraper of TTC next vehicle arrival page, powered by nextbus.com. It does a lot of dirty text searches but works well enough.
+
+I wrote this in 2010. The routes and stops sought are the nearest and handiest to my residence in Toronto, with a couple of transferring and homebound trips thrown in for easy reference.
