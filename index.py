@@ -7,7 +7,7 @@ def parseUrl(address):
 	html = urllib2.urlopen(address).read()
 
 	# grab the table with time estimations
-	index = html.find('<table cellpadding')
+	index = html.find('<table class="adaPredictionTable"')
 	html = html[index:]
 
 	index = html.find('</table>') + 8
@@ -29,7 +29,7 @@ def parseUrl(address):
 	return text
 
 def makeStopUrl(route, direction, stop, escaped = False):
-	url = 'http://www.nextbus.com/wireless/miniPrediction.shtml?a=ttc'
+	url = 'http://www.nextbus.com/predictor/adaPrediction.jsp?a=ttc'
 	url += '&r=' + `route`
 	url += '&d=' + `route` + '_' + direction
 	url += '&s=' + stop
