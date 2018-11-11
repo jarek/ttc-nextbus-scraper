@@ -30,8 +30,8 @@ def parseUrl(address):
 
 def makeStopUrl(route, direction, stop, escaped = False):
 	url = 'http://www.nextbus.com/predictor/adaPrediction.jsp?a=ttc'
-	url += '&r=' + `route`
-	url += '&d=' + `route` + '_' + direction
+	url += '&r=' + str(route)
+	url += '&d=' + str(route) + '_' + direction
 	url += '&s=' + stop
 
 	if (escaped != False):
@@ -43,11 +43,11 @@ def printStop(name, route, direction, stop):
 	stopUrl = makeStopUrl(route, direction, stop)
 	escapedUrl = makeStopUrl(route, direction, stop, True)
 
-	print '<p><a href="' + escapedUrl + '">' + name + '</a>:'
-	print parseUrl(stopUrl)
+	print('<p><a href="' + escapedUrl + '">' + name + '</a>:')
+	print(parseUrl(stopUrl))
 
 def printHeader():
-	print '''<!doctype html>
+	print('''<!doctype html>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>TTC</title>
@@ -55,34 +55,29 @@ def printHeader():
 <style type="text/css">
 	body		{ background: #fff; color: #222; font-family: trebuchet ms, serif; }
 </style>
-'''
+''')
 
 
-print 'Content-type: text/html\n'
+print('Content-type: text/html\n')
 
-printHeader();
+printHeader()
 
-print '<h2>505 Dundas @ Huron</h2>'
-printStop('Eastbound', 505, '0_505_conSun', '1479')
-printStop('Westbound', 505, '1_505_conSun', '7867')
+print('<h2>504 @ Shaw</h2>')
+printStop('Eastbound', 504, '504_0_504Abr', '5422')
+printStop('Westbound', 504, '504_1_504B', '8560')
 
-print '<h2>510 Spadina @ Sullivan</h2>'
-printStop('Northbound', 510, '1_510', '1288')
-printStop('Southbound', 510, '0_510', '2097')
+print('\n<hr>\n')
 
-print '<h2>501 Queen</h2>'
-printStop('Eastbound @ Peter', 501, '0_501Sun', '7060')
-printStop('Westbound @ Soho', 501, '1_501Sun', '704')
+print('<h2>63 to 26</h2>')
+printStop('63 Northbound @ Sudbury', 63, '63_1_63AamSun', '8998')
+printStop('26 Westbound @ Ossington (+20? min)', 26, '26_1_26', '9808')
 
-print '\n<hr>\n'
+print('\n<hr>\n')
 
-print '<h2>506 College @ Spadina</h2>'
-printStop('Eastbound', 506, '0_506Sun', '1010')
-printStop('Westbound', 506, '1_506Sun', '9193')
+print('<h2>26 to 63</h2>')
+printStop('26 Eastbound @ Edwin', 26, '26_0_26', '3828')
+printStop('63 Southbound @ Dupont (+12? min)', 63, '63_0_63A', '2197')
 
-print '\n<hr>\n'
-
-print '<h2>506 + 510</h2>'
-printStop('506 Eastbound @ Dufferin', 506, '0_506Sun', '1861')
-printStop('510 Southbound @ College (+12 minutes)', 510, '0_510', '3323')
+print('<h2>504 @ Dundas West Stn</h2>')
+printStop('Eastbound (+15 min)', 504, '504_0_504Abr', '14186')
 
