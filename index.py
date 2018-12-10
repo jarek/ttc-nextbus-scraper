@@ -64,10 +64,14 @@ printHeader()
 
 print('<h2>504 @ Shaw</h2>')
 printStop('Eastbound', 504, '504_0_504Abr', '5422')
-printStop('Westbound', 504, '504_1_504B', '8560')
+printStop('Westbound (click through and check destination!)', 504, '504_1_504B', '8560')
 
 print('\n<hr>\n')
 
+print('<h2>504 @ Dundas West Stn</h2>')
+printStop('Eastbound (+15 min)', 504, '504_0_504Abr', '14186')
+
+"""
 print('<h2>63 to 26</h2>')
 printStop('63 Northbound @ Sudbury', 63, '63_1_63AamSun', '8998')
 printStop('26 Westbound @ Ossington (+20? min)', 26, '26_1_26', '9808')
@@ -77,7 +81,5 @@ print('\n<hr>\n')
 print('<h2>26 to 63</h2>')
 printStop('26 Eastbound @ Edwin', 26, '26_0_26', '3828')
 printStop('63 Southbound @ Dupont (+12? min)', 63, '63_0_63A', '2197')
-
-print('<h2>504 @ Dundas West Stn</h2>')
-printStop('Eastbound (+15 min)', 504, '504_0_504Abr', '14186')
+"""
 
