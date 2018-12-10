@@ -1,50 +1,72 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
-import urllib2,sys
+import urllib2
+import xml.etree.ElementTree as ET
+
+HTML_URL = 'http://www.nextbus.com/predictor/adaPrediction.jsp?a=ttc&r={route}&s={stop}'
+XML_URL = 'http://webservices.nextbus.com/service/publicXMLFeed?command=predictions&a=ttc&r={route}&s={stop}'
+
+DESTINATIONS = {
+    'West - 504 King towards Dufferin Gate': 'Dufferin',
+    'West - 504 King towards Dundas West Station': 'Dundas West',
+    'East - 504 King towards Broadview Station': 'Broadview',
+    'East - 504 King towards Distillery': 'Distillery'
+}
 
 def parse_url(address):
-    # grab the html
-    html = urllib2.urlopen(address).read()
+    # grab the xml
+    text = urllib2.urlopen(address).read()
+    root = ET.fromstring(text)
 
-    # grab the table with time estimations
-    index = html.find('<table class="adaPredictionTable"')
-    html = html[index:]
+    directions = root[0]
 
-    index = html.find('</table>') + 8
-    html = html[0:index]
+    results = {}
 
-    # estimate for each car is in a separate <tr>
-    # formatted in a given way. do dirty text searches
-    text = ''
-    rowindex = html.find('<tr>')
-    while (rowindex > -1):
-        index = html.find('&nbsp;', rowindex) + 6
-        index2 = html.find('</span>', index)
-        text += html[index:index2] + ', '
+    for destination in directions:
+        if destination.tag != 'direction': continue
 
-        html = html[rowindex + 4:]
-        rowindex = html.find('<tr>')
+        dest_text = destination.attrib['title']
+        # fall check if there is a better text, back to provided if not
+        dest_name = DESTINATIONS.get(dest_text, dest_text)
 
-    text = text[:-2] + ' minutes'
-    return text
+        results[dest_name] = [
+                int(prediction.attrib['minutes'])
+                for prediction in destination]
 
-def stop_url(route, direction, stop, escaped=False):
-    url = 'http://www.nextbus.com/predictor/adaPrediction.jsp?a=ttc'
-    url += '&r=' + str(route)
-    url += '&d=' + str(route) + '_' + direction
-    url += '&s=' + stop
+    return results
 
-    if escaped:
-        url = url.replace('&', '&amp;') # poor man's urlencode...
+def print_stop(name, route, stop, destinations=None):
+    result = ''
 
-    return url
+    html_url = HTML_URL.format(route=route, stop=stop)
+    escaped_url = html_url.replace('&', '&amp;')  # good enough here
 
-def print_stop(name, route, direction, stop):
-    http_url = stop_url(route, direction, stop)
-    escaped_url = stop_url(route, direction, stop, True)
+    result += '<p><a href="' + escaped_url + '">' + name + '</a>: '
 
-    print('<p><a href="' + escaped_url + '">' + name + '</a>:')
-    print(parse_url(http_url))
+    xml_url = XML_URL.format(route=route, stop=stop)
+
+    try:
+        data = parse_url(xml_url)
+
+        if not destinations:
+            predictions_for_destinations = sorted(
+                    str(time)
+                    for times in data.values()
+                    for time in times)
+        else:
+            predictions_for_destinations = sorted(
+                    str(time)
+                    for destination, times in data.items()
+                    for time in times
+                    if destination in destinations)
+
+        result += ', '.join(predictions_for_destinations)
+        result += ' minutes'
+
+    except:
+        result += ' unable to fetch'
+
+    print(result)
 
 def print_header():
     print('''<!doctype html>
@@ -63,23 +85,26 @@ print('Content-type: text/html\n')
 print_header()
 
 print('<h2>504 @ Shaw</h2>')
-print_stop('Eastbound', 504, '504_0_504Abr', '5422')
-print_stop('Westbound (click through and check destination!)', 504, '504_1_504B', '8560')
+print_stop('Eastbound', 504, 5422)
+print_stop('Westbound to Dundas West', 504, 8560, ['Dundas West'])
 
 print('\n<hr>\n')
 
 print('<h2>504 @ Dundas West Stn</h2>')
-print_stop('Eastbound (+15 min)', 504, '504_0_504Abr', '14186')
+print_stop('Eastbound (+15 min)', 504, 14186)
+
+print('\n<hr>\n')
+
+print('<h2>63 @ Sudbury</h2>')
+print_stop('Northbound', 63, 8998)
 
 """
-print('<h2>63 to 26</h2>')
-printStop('63 Northbound @ Sudbury', 63, '63_1_63AamSun', '8998')
-printStop('26 Westbound @ Ossington (+20? min)', 26, '26_1_26', '9808')
+print_stop('26 Westbound @ Ossington (+20? min)', 26, 9808)
 
 print('\n<hr>\n')
 
 print('<h2>26 to 63</h2>')
-printStop('26 Eastbound @ Edwin', 26, '26_0_26', '3828')
-printStop('63 Southbound @ Dupont (+12? min)', 63, '63_0_63A', '2197')
+print_stop('26 Eastbound @ Edwin', 26, 3828)
+print_stop('63 Southbound @ Dupont (+12? min)', 63, 2197)
 """
 
