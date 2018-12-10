@@ -1,3 +1,10 @@
-This is a simple scraper of TTC next vehicle arrival page, powered by nextbus.com. It does a lot of dirty text searches but works well enough.
+A script for scraping next transit departures for several stops
+and presenting them in one basic HTML page.
 
-I wrote this in 2010. The routes and stops sought are the nearest and handiest to my residence in Toronto, with a couple of transferring and homebound trips thrown in for easy reference.
+Data from NextBus XML API. Currently hardcoded to Toronto/TTC
+and a few stops of interest to me.
+
+Python 2 with only stdlib dependencies. Could work with Python 3
+if use of `urllib2` is replaced.
+
+Written in 2010 and revived in 2018.
