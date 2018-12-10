@@ -3,57 +3,57 @@
 import urllib2,sys
 
 def parseUrl(address):
-	# grab the html
-	html = urllib2.urlopen(address).read()
+    # grab the html
+    html = urllib2.urlopen(address).read()
 
-	# grab the table with time estimations
-	index = html.find('<table class="adaPredictionTable"')
-	html = html[index:]
+    # grab the table with time estimations
+    index = html.find('<table class="adaPredictionTable"')
+    html = html[index:]
 
-	index = html.find('</table>') + 8
-	html = html[0:index]
+    index = html.find('</table>') + 8
+    html = html[0:index]
 
-	# estimate for each car is in a separate <tr>
-	# formatted in a given way. do dirty text searches
-	text = ''
-	rowindex = html.find('<tr>')
-	while (rowindex > -1):
-		index = html.find('&nbsp;', rowindex) + 6
-		index2 = html.find('</span>', index)
-		text += html[index:index2] + ', '
+    # estimate for each car is in a separate <tr>
+    # formatted in a given way. do dirty text searches
+    text = ''
+    rowindex = html.find('<tr>')
+    while (rowindex > -1):
+        index = html.find('&nbsp;', rowindex) + 6
+        index2 = html.find('</span>', index)
+        text += html[index:index2] + ', '
 
-		html = html[rowindex + 4:]
-		rowindex = html.find('<tr>')
+        html = html[rowindex + 4:]
+        rowindex = html.find('<tr>')
 
-	text = text[:-2] + ' minutes'
-	return text
+    text = text[:-2] + ' minutes'
+    return text
 
 def makeStopUrl(route, direction, stop, escaped = False):
-	url = 'http://www.nextbus.com/predictor/adaPrediction.jsp?a=ttc'
-	url += '&r=' + str(route)
-	url += '&d=' + str(route) + '_' + direction
-	url += '&s=' + stop
+    url = 'http://www.nextbus.com/predictor/adaPrediction.jsp?a=ttc'
+    url += '&r=' + str(route)
+    url += '&d=' + str(route) + '_' + direction
+    url += '&s=' + stop
 
-	if (escaped != False):
-		url = url.replace('&', '&amp;') # poor man's urlencode...
+    if (escaped != False):
+        url = url.replace('&', '&amp;') # poor man's urlencode...
 
-	return url
+    return url
 
 def printStop(name, route, direction, stop):
-	stopUrl = makeStopUrl(route, direction, stop)
-	escapedUrl = makeStopUrl(route, direction, stop, True)
+    stopUrl = makeStopUrl(route, direction, stop)
+    escapedUrl = makeStopUrl(route, direction, stop, True)
 
-	print('<p><a href="' + escapedUrl + '">' + name + '</a>:')
-	print(parseUrl(stopUrl))
+    print('<p><a href="' + escapedUrl + '">' + name + '</a>:')
+    print(parseUrl(stopUrl))
 
 def printHeader():
-	print('''<!doctype html>
+    print('''<!doctype html>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>TTC</title>
 
 <style type="text/css">
-	body		{ background: #fff; color: #222; font-family: trebuchet ms, serif; }
+    body        { background: #fff; color: #222; font-family: trebuchet ms, serif; }
 </style>
 ''')
 
