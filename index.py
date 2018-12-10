@@ -2,7 +2,7 @@
 
 import urllib2,sys
 
-def parseUrl(address):
+def parse_url(address):
     # grab the html
     html = urllib2.urlopen(address).read()
 
@@ -28,25 +28,25 @@ def parseUrl(address):
     text = text[:-2] + ' minutes'
     return text
 
-def makeStopUrl(route, direction, stop, escaped = False):
+def stop_url(route, direction, stop, escaped=False):
     url = 'http://www.nextbus.com/predictor/adaPrediction.jsp?a=ttc'
     url += '&r=' + str(route)
     url += '&d=' + str(route) + '_' + direction
     url += '&s=' + stop
 
-    if (escaped != False):
+    if escaped:
         url = url.replace('&', '&amp;') # poor man's urlencode...
 
     return url
 
-def printStop(name, route, direction, stop):
-    stopUrl = makeStopUrl(route, direction, stop)
-    escapedUrl = makeStopUrl(route, direction, stop, True)
+def print_stop(name, route, direction, stop):
+    http_url = stop_url(route, direction, stop)
+    escaped_url = stop_url(route, direction, stop, True)
 
-    print('<p><a href="' + escapedUrl + '">' + name + '</a>:')
-    print(parseUrl(stopUrl))
+    print('<p><a href="' + escaped_url + '">' + name + '</a>:')
+    print(parse_url(http_url))
 
-def printHeader():
+def print_header():
     print('''<!doctype html>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -60,16 +60,16 @@ def printHeader():
 
 print('Content-type: text/html\n')
 
-printHeader()
+print_header()
 
 print('<h2>504 @ Shaw</h2>')
-printStop('Eastbound', 504, '504_0_504Abr', '5422')
-printStop('Westbound (click through and check destination!)', 504, '504_1_504B', '8560')
+print_stop('Eastbound', 504, '504_0_504Abr', '5422')
+print_stop('Westbound (click through and check destination!)', 504, '504_1_504B', '8560')
 
 print('\n<hr>\n')
 
 print('<h2>504 @ Dundas West Stn</h2>')
-printStop('Eastbound (+15 min)', 504, '504_0_504Abr', '14186')
+print_stop('Eastbound (+15 min)', 504, '504_0_504Abr', '14186')
 
 """
 print('<h2>63 to 26</h2>')
