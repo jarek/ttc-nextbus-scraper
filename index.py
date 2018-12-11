@@ -50,17 +50,17 @@ def print_stop(name, route, stop, destinations=None):
 
         if not destinations:
             predictions_for_destinations = sorted(
-                    str(time)
+                    time
                     for times in data.values()
                     for time in times)
         else:
             predictions_for_destinations = sorted(
-                    str(time)
+                    time
                     for destination, times in data.items()
                     for time in times
                     if destination in destinations)
 
-        result += ', '.join(predictions_for_destinations)
+        result += ', '.join(str(p) for p in predictions_for_destinations)
         result += ' minutes'
 
     except:
