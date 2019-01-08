@@ -7,10 +7,10 @@ HTML_URL = 'http://www.nextbus.com/predictor/adaPrediction.jsp?a=ttc&r={route}&s
 XML_URL = 'http://webservices.nextbus.com/service/publicXMLFeed?command=predictions&a=ttc&r={route}&s={stop}'
 
 DESTINATIONS = {
-    'West - 504 King towards Dufferin Gate': 'Dufferin',
-    'West - 504 King towards Dundas West Station': 'Dundas West',
-    'East - 504 King towards Broadview Station': 'Broadview',
-    'East - 504 King towards Distillery': 'Distillery'
+    'West - 504b King towards Dufferin Gate': 'Dufferin',
+    'West - 504a King towards Dundas West Station': 'Dundas West',
+    'East - 504b King towards Broadview Station': 'Broadview',
+    'East - 504a King towards Distillery': 'Distillery'
 }
 
 def parse_url(address):
