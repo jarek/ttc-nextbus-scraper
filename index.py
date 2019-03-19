@@ -1,5 +1,6 @@
 #!/usr/bin/env python2
 
+import datetime
 import urllib2
 import xml.etree.ElementTree as ET
 
@@ -73,6 +74,7 @@ def print_header():
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width">
+<meta http-equiv="refresh" content="15">
 <title>TTC</title>
 
 <style type="text/css">
@@ -85,6 +87,8 @@ print('Content-type: text/html\n')
 
 print_header()
 
+pst_now = datetime.datetime.now()  # TODO: do timezone properly...
+print('as of ' + str(pst_now.hour+3) + pst_now.strftime(':%M:%S'))
 print('<h2>504 @ Shaw</h2>')
 print_stop('Eastbound', 504, 5422)
 print_stop('Westbound to Dundas West', 504, 8560, ['Dundas West'])
