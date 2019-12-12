@@ -10,6 +10,7 @@ XML_URL = 'http://webservices.nextbus.com/service/publicXMLFeed?command=predicti
 DESTINATIONS = {
     'West - 504b King towards Dufferin Gate': 'Dufferin',
     'West - 504a King towards Dundas West Station': 'Dundas West',
+    'West - 304 King towards Dundas West Station': 'Dundas West',
     'East - 504b King towards Broadview Station': 'Broadview',
     'East - 504a King towards Distillery': 'Distillery'
 }
@@ -87,29 +88,24 @@ print('Content-type: text/html\n')
 
 print_header()
 
-pst_now = datetime.datetime.now()  # TODO: do timezone properly...
-print('as of ' + str(pst_now.hour+3) + pst_now.strftime(':%M:%S'))
+server_now = datetime.datetime.now()
+toronto_now = server_now + datetime.timedelta(hours=3)
+print('as of ' + toronto_now.strftime('%H:%M:%S'))
+
 print('<h2>504 @ Shaw</h2>')
 print_stop('Eastbound', 504, 5422)
 print_stop('Westbound to Dundas West', 504, 8560, ['Dundas West'])
 
-print('\n<hr>\n')
-
-print('<h2>504 @ Dundas West Stn</h2>')
-print_stop('Eastbound (+15 min)', 504, 14186)
-
-print('\n<hr>\n')
-
 print('<h2>63 @ Sudbury</h2>')
 print_stop('Northbound', 63, 8998)
 
-"""
-print_stop('26 Westbound @ Ossington (+20? min)', 26, 9808)
+print('\n<hr>\n')
+
+print('<h2>504 @ Yonge / King Stn</h2>')
+print_stop('Westbound', 504, 23884)  # this is TTC stop 15637, not sure why NextBus is different
 
 print('\n<hr>\n')
 
-print('<h2>26 to 63</h2>')
-print_stop('26 Eastbound @ Edwin', 26, 3828)
-print_stop('63 Southbound @ Dupont (+12? min)', 63, 2197)
-"""
+print('<h2>63 @ Ossington Stn</h2>')
+print_stop('Southbound', 63, 14265)
 
