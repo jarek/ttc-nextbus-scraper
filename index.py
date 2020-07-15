@@ -77,7 +77,7 @@ def print_header():
 <title>TTC</title>
 
 <style type="text/css">
-    body        { background: #fff; color: #222; font-family: trebuchet ms, serif; }
+    body        { background: #efefef; color: #222; font-family: trebuchet ms, serif; }
 </style>
 ''')
 
@@ -90,20 +90,16 @@ server_now = datetime.datetime.now()
 toronto_now = server_now + datetime.timedelta(hours=3)
 print('as of ' + toronto_now.strftime('%H:%M:%S'))
 
-print('<h2>504 @ Shaw</h2>')
-print(format_stop('Eastbound', 504, 5422))
-print(format_stop('Westbound to Dundas West', 504, 8560, ['Dundas West']))
+print('<h2>504 King @ KQR</h2>')
+print(format_stop('Northbound to Dundas West', 504, 14837))
+print(format_stop('Eastbound', 504, 10325))
 
-print('<h2>63 @ Sudbury</h2>')
-print(format_stop('Northbound', 63, 8998))
+print('<h2>501 Queen @ KQR</h2>')
+print(format_stop('Eastbound', 501, 4321))
+# print(format_stop('Westbound', 501, 9459))
 
-print('\n<hr>\n')
+# print('\n<hr>\n')
 
-print('<h2>504 @ Yonge / King Stn</h2>')
-print(format_stop('Westbound', 504, 23884))  # this is TTC stop 15637, not sure why NextBus is different
-
-print('\n<hr>\n')
-
-print('<h2>63 @ Ossington Stn</h2>')
-print(format_stop('Southbound', 63, 14265))
+# print('<h2>504 @ Yonge / King Stn</h2>')
+# print(format_stop('Westbound', 504, 23884))  # this is TTC stop 15637, not sure why NextBus is different
 
